@@ -63,7 +63,7 @@ echo.
 echo.
 echo Checking for updates...
 echo.
-Powershell Invoke-WebRequest -Uri https://raw.githubusercontent.com/Andrebeck27/plugin-manager-test/main/changelog -OutFile C:\ytdl\plugins-a\manager\most-recent-changelog.txt
+Powershell Invoke-WebRequest -Uri https://raw.githubusercontent.com/Andrebeck27/plugin-manager-test/main/local-changelog.txt -OutFile C:\ytdl\plugins-a\manager\most-recent-changelog.txt
 fc C:\ytdl\plugins-a\manager\most-recent-changelog.txt C:\ytdl\plugins-a\manager\local-changelog.txt >nul
 cls
 if errorlevel 1 (set Updatestatus=An update is available at https://github.com/Andrebeck27/plugin-manager-test!) else (set Updatestatus=Manager is up-to-date.)
