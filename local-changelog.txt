@@ -1,0 +1,7 @@
+V 0.02 ---------------------------------------------------------
+Added short menu - update test 2
+
+* Removed big error message on boot
+
+V 0.01 ---------------------------------------------------------
+Update checking test 1!
