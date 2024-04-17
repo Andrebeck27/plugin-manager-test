@@ -49,6 +49,7 @@ if not exist C:\ytdl\plugins-a\Manager Powershell New-Item -Path "C:\ytdl\plugin
 goto UpdateCheck
 
 
+
 :UpdateCheck
 @echo off
 echo. Pre-boot checks...
@@ -70,12 +71,34 @@ if errorlevel 1 (set Updatestatus=An update is available at https://github.com/A
 del C:\ytdl\plugins-a\manager\most-recent-changelog.txt
 goto setstatuses
 
+:update2
+cls
+echo Checking for Internet access.
+echo.
+Ping www.google.com -n 1 -w 1000
+if errorlevel 1 (set /a internet=0) else (set /a internet=1)
+if %internet% == 0 (goto notconnected2)
+echo Success!
+echo.
+echo.
+echo Checking for updates...
+echo.
+Powershell Invoke-WebRequest -Uri https://raw.githubusercontent.com/Andrebeck27/plugin-manager-test/main/local-changelog.txt -OutFile C:\ytdl\plugins-a\manager\most-recent-changelog.txt
+fc C:\ytdl\plugins-a\manager\most-recent-changelog.txt C:\ytdl\plugins-a\manager\local-changelog.txt >nul
+cls
+if errorlevel 1 (set Updatestatus=An update is available at https://github.com/Andrebeck27/plugin-manager-test!) else (set Updatestatus=Manager is up-to-date.)
+del C:\ytdl\plugins-a\manager\most-recent-changelog.txt
+goto statuses
 
 :notconnected
 echo Not connected to internet. Not checking for update.
 set Updatestatus=You are offline. No checks for updates were performed.
 goto setstatuses
  
+:notconnected2
+echo Not connected to internet. Not checking for update.
+set Updatestatus=You are offline. No checks for updates were performed.
+goto statuses
 
 
 :setstatuses
@@ -144,6 +167,7 @@ goto menu
 
 :menu
 cls
+echo ----------- :menu -----------
 echo.
 echo Press 1 to manage files in \plugins-a
 echo.
@@ -151,29 +175,67 @@ echo Press 2 to manage files in \ytdl
 echo.
 echo Press 3 to manage other stuff.
 echo.
-choice /c 123
+echo Press 4 to check for updates.
+echo.
+echo Press 5 to go back to statuses.
+echo.
+choice /c 12345
 rem list errorlevels in DECREASING order
-if errorlevel 3 goto pluginsamenu
+if errorlevel 5 goto statuses
+if errorlevel 4 goto update2
+if errorlevel 3 goto othermanage
 if errorlevel 2 goto ytdlmenu
-if errorlevel 1 goto othermanage
+if errorlevel 1 goto pluginsamenu
 cls
 goto menu
 
 
 :pluginsamenu
 cls
-echo todo
-echo finish this script LMFAOOO
-pause
+echo ----------- :pluginsamenu -----------
+echo.
+echo Press 1 to manage shortcuts
+echo.
+echo Press 2 to install or uninstall plugins
+echo.
+echo Press 3 to manage plugins-a settings
+echo.
+echo Press any key to go back to :menu
+choice /c 123
+rem list errorlevels in DECREASING order
+if errorlevel 3 goto pluginsamanage
+if errorlevel 2 goto plugamanage
+if errorlevel 1 goto transferwarnpluga
+cls
+goto menu
+
+:transferwarnpluga
+cls
+echo.
+
 
 :ytdlmenu
 cls
-echo todo
-echo finish this script LMFAOOO
-pause
+echo ----------- :ytdlmenu -----------
+echo.
+echo Press 1 to transfer plugins in plugins-a to root
+echo.
+echo Press 2 to install or uninstall plugins
+echo.
+echo Press 3 to manage yt-dlp settings
+echo.
+choice /c 123
+rem list errorlevels in DECREASING order
+if errorlevel 3 goto ytdlpsettings
+if errorlevel 2 goto rootmanage
+if errorlevel 1 goto transferwarnroot
+cls
+goto menu
 
 :othermanage
 cls
 echo todo
+echo.
 echo finish this script LMFAOOO
 pause
+goto statuses

@@ -1,3 +1,8 @@
+V 0.04 ---------------------------------------------------------
+
+added more menu options
+still nothing actually interesting
+
 V 0.03 ---------------------------------------------------------
 
 update test 3
