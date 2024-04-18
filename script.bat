@@ -37,6 +37,18 @@ if %timer% == 1 (exit) else (set /A timer = %timer% - 1)
 goto adminoff
 
 
+
+:newchangelog
+echo.
+echo.
+echo.
+echo      v0.05
+echo.
+echo.
+echo beginning shortcut creations for plugins-a and root
+choice >nul
+goto menu
+
 rem THIS IS THE START OF THE SCRIPT
 
 
@@ -117,8 +129,8 @@ set /A fdGUIps1 = 0
 set /A fdUiHelper = 0
 set /A fdmp3qd = 0
 set /A fdmp4qd = 0
-if not exist C:\ytdl\plugins-a\GUIps1.ps1 set /A fdGUIps1 = 1
-if not exist C:\ytdl\plugins-a\UiHelper.bat set /A fdUiHelper = 1
+if not exist C:\ytdl\plugins-a\GUI\GUIps1.ps1 set /A fdGUIps1 = 1
+if not exist C:\ytdl\plugins-a\GUI\UiHelper.bat set /A fdUiHelper = 1
 if not exist C:\ytdl\plugins-a\mp3-qd.ps1 set /A fdmp3qd = 1
 if not exist C:\ytdl\plugins-a\mp4-qd.ps1 set /A fdmp4qd = 1
 echo Temporary Debug info
@@ -177,11 +189,14 @@ echo Press 3 to manage other stuff.
 echo.
 echo Press 4 to check for updates.
 echo.
-echo Press 5 to go back to statuses.
+echo Press 5 to see additions to local changelog.
 echo.
-choice /c 12345
+echo Press 6 to go back to statuses.
+echo.
+choice /c 123456
 rem list errorlevels in DECREASING order
-if errorlevel 5 goto statuses
+if errorlevel 6 goto statuses
+if errorlevel 5 goto newchangelog
 if errorlevel 4 goto update2
 if errorlevel 3 goto othermanage
 if errorlevel 2 goto ytdlmenu
@@ -203,15 +218,56 @@ echo.
 echo Press any key to go back to :menu
 choice /c 123
 rem list errorlevels in DECREASING order
-if errorlevel 3 goto pluginsamanage
-if errorlevel 2 goto plugamanage
-if errorlevel 1 goto transferwarnpluga
+if errorlevel 3 goto plugamanage
+if errorlevel 2 goto plugainstuninst
+if errorlevel 1 goto plugashortcuts
 cls
 goto menu
 
-:transferwarnpluga
+
+
+:plugashortcuts
 cls
+echo ----------- :plugashortcuts -----------
 echo.
+echo Press 1 to create GUI shortcut.
+echo.
+echo Press 2 to create Quick Download shortcuts.
+echo.
+echo Press any key to return to :pluginsamenu
+echo.
+choice /c 123
+rem DECREASING
+cls
+if errorlevel 2 goto plugaqdshortcut
+if errorlevel 1 goto plugaGUIshortcut
+cls
+goto pluginsamenu
+
+:plugaqdshortcut
+echo ----------- :plugaqdshortcut -----------
+echo.
+echo Press 1 to create the shortcut for mp3-qd.
+echo.
+echo Press 2 to create the shortcut for mp4-qd.
+echo.
+echo Press any key to return to :plugashortcuts
+echo.
+choice /c 12
+rem DECREASING
+cls
+if errorlevel 2 goto createplugamp4qdshort
+if errorlevel 1 goto createplugamp3qdshort
+cls
+goto plugashortcuts
+
+:createplugamp3qdshort
+powershell "$s=(New-Object -COM WScript.Shell).CreateShortcut('C:\ytdl\plugins-a\shortcut\mp3-qd.lnk');$s.TargetPath='C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -File "C:\ytdl\plugins-a\mp3-qd.ps1"';$s.Save()"
+cls
+echo Created mp3-qd shortcut in \plugins-a\shortcuts
+echo.
+goto plugaqdshortcut
+
 
 
 :ytdlmenu

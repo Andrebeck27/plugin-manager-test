@@ -1,3 +1,7 @@
+V 0.05 ---------------------------------------------------------
+
+beginning shortcut creations for plugins-a and root
+
 V 0.04 ---------------------------------------------------------
 
 added more menu options
